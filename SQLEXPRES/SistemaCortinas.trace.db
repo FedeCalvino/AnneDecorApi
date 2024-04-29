@@ -1,0 +1,15 @@
+2024-04-24 14:31:16.306529-03:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientConnectionException: The database is open in exclusive mode; can not open additional connections [90135-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.engine.SessionLocal.checkSuspended(SessionLocal.java:1254)
+	at org.h2.engine.SessionLocal.transitionToState(SessionLocal.java:1246)
+	at org.h2.engine.SessionLocal.waitIfExclusiveModeEnabled(SessionLocal.java:1494)
+	at org.h2.command.Command.executeQuery(Command.java:182)
+	at org.h2.jdbc.JdbcPreparedStatement.executeQuery(JdbcPreparedStatement.java:131)
+	at com.example.sistemaannedecor2.Conexiones.ClienteConexion.findAll(ClienteConexion.java:119)
+	at com.example.sistemaannedecor2.Service.ClienteService.findAll(ClienteService.java:37)
+	at com.example.sistemaannedecor2.SistemaAnneDecor2Application.main(SistemaAnneDecor2Application.java:18)
