@@ -6,8 +6,10 @@ package com.example.sistemaannedecor2.Conexiones;
 
 
 import com.example.sistemaannedecor2.Clases.Cortina;
-import com.example.sistemaannedecor2.Clases.TipoTela;
+import com.example.sistemaannedecor2.Clases.EstadoCortina;
+import com.example.sistemaannedecor2.Clases.TipoCortina.Roller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;  
@@ -16,7 +18,12 @@ import java.sql.*;
 public class CortinaConexion implements IConexion<Cortina> {
 
 private static TipoTelaConexion tipoTelaC = new TipoTelaConexion();
-private static final String SQL_INSERT = "INSERT INTO CORTINAS(ALTO,ANCHO,TIPO_TELA,ESTADO_CORTINA,MOTORIZADA) VALUES(?,?,?,?,?)";
+
+private static ConexionEstadoCortina estadoCc = new ConexionEstadoCortina();
+
+private static final String SQL_INSERT_CORTINA = "INSERT INTO CORTINAS(ALTO,ANCHO,TIPO_TELA_ID,ESTADO_CORTINA_ID,MOTORIZADA) VALUES(?,?,?,?,?)";
+private static final String SQL_INSERT_ROLLER = "INSERT INTO ROLLER(ID_CORTINA,CADENA_METALICA,CANO,LARGO_CADENA) VALUES(?,?,?,?)";
+
 private static final String SQL_DELETE = "DELETE FROM CORTINAS WHERE ID = ?";
 private static final String SQL_UPDATE = "UPDATE CORTINAS SET ALTO = ?, ANCHO = ? , TIPO_TELA_ID = ? , MOTORIZADA = ? WHERE ID = ?";
 private static List<Cortina> cortinas = new ArrayList<Cortina>();
@@ -28,16 +35,19 @@ private byte falseBite = 0;
 
 
 
-    @Override
-    public Cortina save(Cortina C) {
+    @Override()
+    public Cortina saveCortina(Cortina C) {
         java.sql.Connection conexion=null;
         try{
+            C.setTela(tipoTelaC.findById(C.IdTipoTela));
             conexion = (java.sql.Connection) Conexion.GetConexion();
-            PreparedStatement ps = conexion.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-            ps.setDouble(1, C.getAlto());
-            ps.setDouble(2,C.getAncho());
+            PreparedStatement ps = conexion.prepareStatement(SQL_INSERT_CORTINA, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, C.getAlto());
+            ps.setString(2, C.getAncho());
             ps.setInt(3, C.GetTipoTelaId());
-            ps.setInt(4, C.GetEstadoCortinaId());
+            EstadoCortina ec = new EstadoCortina();
+            int IdEstado = estadoCc.saveCortina(ec).getId();
+            ps.setInt(4,IdEstado);
             if(C.getMotorizada()){
                 ps.setByte(5,trueBite);
             }else{
@@ -49,9 +59,10 @@ private byte falseBite = 0;
             while(rs.next()){
                 C.setId(rs.getInt(1));
             }
-    
+            C.setEstado(ec);
+
         }catch(Exception e){
-            
+            e.printStackTrace();
         }finally{
             try{
                 conexion.close();
@@ -60,6 +71,40 @@ private byte falseBite = 0;
             }
         }
         return C;
+    }
+
+
+
+    public Roller saverRoller(Roller R) {
+        Cortina C = new Cortina(R.getAlto(),R.getAncho(),R.getMotorizada(),R.IdTipoTela);
+        int idC = this.saveCortina(C).getId();
+        java.sql.Connection conexion=null;
+        try{
+            conexion = (java.sql.Connection) Conexion.GetConexion();
+            PreparedStatement ps = conexion.prepareStatement(SQL_INSERT_ROLLER, Statement.RETURN_GENERATED_KEYS);
+
+            ps = conexion.prepareStatement(SQL_INSERT_ROLLER, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idC);
+            ps.setInt(3, R.getTubo());
+            ps.setDouble(4, R.getLargoCadena());
+            ps.setByte(2,R.isCadenaMetalicaByte());
+
+            ps.execute();
+            ResultSet rs = ps.getGeneratedKeys();
+            while(rs.next()){
+                R.setId(rs.getInt(1));
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            try{
+                conexion.close();
+            }catch(Exception e){
+
+            }
+        }
+        return R;
     }
 
     @Override
@@ -72,7 +117,10 @@ private byte falseBite = 0;
             statement.setInt(1,id);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
-                 c = new Cortina (rs.getInt(1),rs.getDouble(2),rs.getDouble(3),true, (TipoTela) tipoTelaC.findById(rs.getInt(4)),rs.getInt(5));
+                 c = new Cortina (rs.getNString(2),rs.getNString(3),true, rs.getInt(5));
+                 c.setTela(tipoTelaC.findById(rs.getInt(4)));
+                 c.setId(rs.getInt(1));
+                 c.setEstado(estadoCc.findById(rs.getInt(5)));
             }
 
         }catch(Exception e){
@@ -93,8 +141,8 @@ private byte falseBite = 0;
         try{
             conexion = (java.sql.Connection) Conexion.GetConexion();
             PreparedStatement ps = conexion.prepareStatement(SQL_UPDATE);
-            ps.setDouble(1, C.getAlto());
-            ps.setDouble(2,C.getAncho());
+            ps.setString(1, C.getAlto());
+            ps.setString(2,C.getAncho());
             ps.setInt(3,C.GetTipoTelaId());
             if(C.getMotorizada()){
                 ps.setByte(4,trueBite);
@@ -141,9 +189,19 @@ private byte falseBite = 0;
             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
-
-                Cortina c = new Cortina (rs.getInt(1),rs.getDouble(2),rs.getDouble(3),true, (TipoTela) tipoTelaC.findById(rs.getInt(4)),rs.getInt(5));
-                cortinas.add(c);
+                if(rs.getByte(6)==1){
+                    Cortina c = new Cortina (rs.getNString(2),rs.getNString(3),true, rs.getInt(5));
+                    c.setTela(tipoTelaC.findById(rs.getInt(4)));
+                    c.setId(rs.getInt(1));
+                    c.setEstado(estadoCc.findById(rs.getInt(5)));
+                    cortinas.add(c);
+                }else{
+                    Cortina c = new Cortina (rs.getNString(2),rs.getNString(3),false, rs.getInt(5));
+                    c.setTela(tipoTelaC.findById(rs.getInt(4)));
+                    c.setId(rs.getInt(1));
+                    c.setEstado(estadoCc.findById(rs.getInt(5)));
+                    cortinas.add(c);
+                }
             }
             return cortinas;
 
@@ -159,4 +217,7 @@ private byte falseBite = 0;
         return cortinas;
     }
 
+    public List<Cortina> findCortinasByVenta(int id) {
+        return null;
+    }
 }

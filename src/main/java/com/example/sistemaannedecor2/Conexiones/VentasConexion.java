@@ -6,6 +6,7 @@ package com.example.sistemaannedecor2.Conexiones;
 
 
 import com.example.sistemaannedecor2.Clases.Cliente;
+import com.example.sistemaannedecor2.Clases.Cortina;
 import com.example.sistemaannedecor2.Clases.EstadoVenta;
 import com.example.sistemaannedecor2.Clases.Venta;
 import com.example.sistemaannedecor2.Service.ClienteService;
@@ -14,9 +15,8 @@ import com.sun.jdi.connect.spi.Connection;
 
 import java.sql.Date;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -24,6 +24,7 @@ import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
 
 /**
  *
@@ -36,6 +37,7 @@ public class VentasConexion implements IConexion<Venta> {
     private static final String SQL_INSERT = "INSERT INTO VENTA(CLIENTE_ID,ESTADO_VENTA_ID,FECHA,PRECIO) VALUES(?,?,?,?)";
     private static final String SQL_DELETE = "DELETE FROM VENTA WHERE ID = ?";
     private static final String SQL_UPDATE = "UPDATE VENTA SET FECHA = ?, PRECIO = ? , CLIENTE_ID = ? WHERE ID = ?";
+    private static final String SQL_ADD_CORTINA_VENTA = "INSERT INTO VENTA_CORTINA(VENTA_ID,CORTINA_ID) VALUES(?,?)";
 
     public static Connection conexion;
     private List<Venta> ventas=new ArrayList<>();
@@ -43,12 +45,12 @@ public class VentasConexion implements IConexion<Venta> {
     private EstadoVentaService ServicioEstadoVenta=new EstadoVentaService();
 
     @Override
-    public Venta save(Venta v){
+    public Venta saveCortina(Venta v){
        java.sql.Connection conexion=null;
         try{
             conexion = (java.sql.Connection) Conexion.GetConexion();
             PreparedStatement ps = conexion.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-            Cliente c = clienteService.findById(v.IdCliente);
+            Cliente c = clienteService.findById(v.getClienteIdNoPorCliente());
             if(c!=null) {
                 ps.setInt(1, c.getId());
                 EstadoVenta estado = new EstadoVenta();
@@ -70,11 +72,12 @@ public class VentasConexion implements IConexion<Venta> {
                 return null;
             }
         }catch(Exception e){
-
+            e.printStackTrace();
         }finally{
             try{
                 conexion.close();
             }catch(Exception e){
+                e.printStackTrace();
             }
         }
         return v;
@@ -126,6 +129,7 @@ public class VentasConexion implements IConexion<Venta> {
             try{
                 conexion.close();
             }catch(Exception e){
+                e.printStackTrace();
             }
         }
     }
@@ -173,5 +177,33 @@ public class VentasConexion implements IConexion<Venta> {
         }
         return ventas;
     }
-    
+
+    public List<Cortina> SaveCortinasVenta(int idVenta ,List<Cortina> cortinas) {
+        java.sql.Connection conexion=null;
+        try{
+            conexion = (java.sql.Connection) Conexion.GetConexion();
+            PreparedStatement ps = conexion.prepareStatement(SQL_ADD_CORTINA_VENTA);
+            Iterator<Cortina> it = cortinas.iterator();
+            Venta v = this.findById(idVenta);
+            while (it.hasNext()) {
+                Cortina c = it.next();
+                if (c != null){
+                    ps.setInt(1, c.getId());
+                    ps.setInt(1, c.getId());
+                    v.AddCortina(c);
+                }else {
+                    return null;
+                }
+            }
+        }catch(Exception e){
+
+        }finally{
+            try{
+                conexion.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        return cortinas;
+    }
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Venta{
     int Id;
     Cliente cliente;
-    public int IdCliente;
+    private int IdCliente;
     private ArrayList<Cortina> cortinas = new ArrayList<Cortina>();
     EstadoVenta Estado;
     public java.sql.Date Fecha;
@@ -91,7 +91,7 @@ public class Venta{
         Fecha = fecha;
     }
 
-    public void setPrecio(int precio) {
+    public void setPrecioFinal(int precio) {
         PrecioFinal = precio;
     }
 

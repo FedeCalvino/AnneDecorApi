@@ -15,10 +15,10 @@ import com.example.sistemaannedecor2.Clases.TipoTela;
 public class Tradicional extends Cortina {
     
     public int CantidadPaños;
-    
-    public Tradicional(double Alto, double largo, Boolean motorizada, TipoTela tela, int cantidadPaños , int precio) {
-        super(Alto, largo, motorizada, tela, precio);
-        this.CantidadPaños=cantidadPaños;
+
+
+    public Tradicional(String Alto, String largo, Boolean motorizada, int Idtela, int cantidadPaños) {
+        super(Alto, largo, motorizada, Idtela);
+        CantidadPaños = cantidadPaños;
     }
-    
 }

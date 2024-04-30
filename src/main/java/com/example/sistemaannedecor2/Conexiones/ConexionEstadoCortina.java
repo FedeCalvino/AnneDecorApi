@@ -13,16 +13,16 @@ import java.util.List;
 public class ConexionEstadoCortina implements IConexion<EstadoCortina>{
 
     private static String SQL_BY_ID = "select * from ESTADO_CORTINA where id = ?";
-    private static final String SQL_INSERT = "INSERT INTO ESTADO_CORTINA(TELA_CORTADA,CANO_CORTADO,ARAMDO,PROBADO) VALUES(?,?,?,?)";
+    private static final String SQL_INSERT = "INSERT INTO ESTADO_CORTINA(TELA_CORTADA,CANO_CORTADO,ARMADO,PROBADO) VALUES(?,?,?,?)";
     private static final String SQL_DELETE = "DELETE FROM ESTADO_CORTINA WHERE ID = ?";
-    private static final String SQL_UPDATE = "UPDATE ESTADO_CORTINA SET TELA_CORTADA = ?, CANO_CORTADO = ? , ARAMDO = ? , PROBADO = ? WHERE ID = ?";
+    private static final String SQL_UPDATE = "UPDATE ESTADO_CORTINA SET TELA_CORTADA = ?, CANO_CORTADO = ? , ARAMADO = ? , PROBADO = ? WHERE ID = ?";
     private static final String SQL_SELECT_ALL = "SELECT * FROM ESTADO_CORTINA";
 
     private byte trueBite = 1;
     private byte falseBite = 0;
 
     @Override
-    public EstadoCortina save(EstadoCortina ev) {
+    public EstadoCortina saveCortina(EstadoCortina ev) {
         java.sql.Connection conexion=null;
         try{
             conexion = (java.sql.Connection) Conexion.GetConexion();
@@ -40,12 +40,12 @@ public class ConexionEstadoCortina implements IConexion<EstadoCortina>{
             }
 
         }catch(Exception e){
-
+            e.printStackTrace();
         }finally{
             try{
                 conexion.close();
             }catch(Exception e){
-
+                e.printStackTrace();
             }
         }
         return ev;

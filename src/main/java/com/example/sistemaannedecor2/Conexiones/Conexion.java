@@ -19,7 +19,7 @@ public class Conexion {
             "DROP TABLE IF EXISTS CORTINAS; "
             + "CREATE TABLE CORTINAS("
             + "ID INT IDENTITY(1,1) PRIMARY KEY,"
-            + "ALTO decimal(18, 0) NOT NULL,"
+            + "ALTO C NOT NULL,"
             + "ANCHO decimal(18, 0) NOT NULL,"
             + "TIPO_TELA_ID INT,"
             + "ESTADO_CORTINA_ID INT,"
@@ -28,14 +28,11 @@ public class Conexion {
     private static final String SQL_DROP_ROLLER =
             "DROP TABLE IF EXISTS ROLLER; "
                     + "CREATE TABLE ROLLER("
-                    + "ID INT IDENTITY(1,1) PRIMARY KEY,"
-                    + "ALTO decimal(18, 0) NOT NULL,"
-                    + "ANCHO decimal(18, 0) NOT NULL,"
-                    + "TIPO_TELA_ID INT,"
-                    + "ESTADO_CORTINA_ID INT,"
-                    + "MOTORIZADA BIT" +
-                    "  CANO INT NOT NULL" +
-                    "  LARGO_CADENA decimal(18, 0))";
+                    + "ID INT IDENTITY(1,1) PRIMARY KEY," +
+                      "ID_CORTINA INT NOT NULL" +
+                      "CADENA_METALICA BIT NOT NULL"+
+                      "CANO int NOT NULL" +
+                      "LARGO_CADENA character)";
     
    private static final String SQL_DROP_CREATE_VENTA = "DROP TABLE IF EXISTS VENTA; "
             + "CREATE TABLE VENTA(ID INT IDENTITY(1,1) PRIMARY KEY,"
@@ -67,6 +64,7 @@ public class Conexion {
             + "PROBADO BIT)";
    private static final String SQL_DROP_CREATE_ESTADO_VENTA = "DROP TABLE IF EXISTS ESTADO_VENTA; CREATE TABLE ESTADO_VENTA(ID INT PRIMARY KEY IDENTITY(1,1)," +
            "ARMADO BIT NOT NULL,INSTALADO BIT NOT NULL,PAGADO BIT NOT NULL,FACTURADO BIT NOT NULL)";
+
    private static final String SQL_DROP_CREATE_TIPO_TELA = "DROP TABLE IF EXISTS TIPO_TELA; "
             + "CREATE TABLE TIPO_TELA("
             + "ID INT IDENTITY(1,1) PRIMARY KEY,"
@@ -88,6 +86,7 @@ public class Conexion {
                 try{
                     connection = GetConexion();
                     Statement statement = connection.createStatement();
+                    statement.execute(SQL_DROP_ROLLER);
                     statement.execute(SQL_DROP_CREATE_TIPO_TELA);
                     statement.execute(SQL_DROP_CREATE_ESTADO_VENTA);
                     statement.execute(SQL_DROP_CREATE_ESTADO_CORTINA);

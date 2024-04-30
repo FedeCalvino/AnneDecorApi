@@ -29,7 +29,7 @@ private static final String SQL_UPDATE = "UPDATE TIPO_TELA SET NOMBRE = ?, COLOR
 
 
     @Override
-    public TipoTela save(TipoTela tp) {
+    public TipoTela saveCortina(TipoTela tp) {
         java.sql.Connection conexion=null;
 
         try{

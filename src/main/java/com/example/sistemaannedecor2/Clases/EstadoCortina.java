@@ -16,14 +16,6 @@ public class EstadoCortina {
     Probado=false;
     }
 
-    public EstadoCortina(int id, boolean cañoCortado, boolean telaCortada, boolean armado, boolean probado) {
-        Id = id;
-        CañoCortado = cañoCortado;
-        TelaCortada = telaCortada;
-        Armado = armado;
-        Probado = probado;
-    }
-
     public EstadoCortina(int id) {
         Id = id;
     }

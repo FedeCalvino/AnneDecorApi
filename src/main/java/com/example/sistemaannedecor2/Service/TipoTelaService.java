@@ -1,8 +1,6 @@
 
 package com.example.sistemaannedecor2.Service;
-import com.example.sistemaannedecor2.Clases.Cliente;
 import com.example.sistemaannedecor2.Clases.TipoTela;
-import com.example.sistemaannedecor2.Conexiones.ClienteConexion;
 import com.example.sistemaannedecor2.Conexiones.TipoTelaConexion;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,7 @@ public class TipoTelaService {
     }
 
     public TipoTela Save(TipoTela c){
-        return tpCon.save(c);
+        return tpCon.saveCortina(c);
     }
 
 

@@ -1,8 +1,7 @@
 
 package com.example.sistemaannedecor2.Service;
-import com.example.sistemaannedecor2.Clases.Cliente;
+import com.example.sistemaannedecor2.Clases.Cortina;
 import com.example.sistemaannedecor2.Clases.Venta;
-import com.example.sistemaannedecor2.Conexiones.ClienteConexion;
 import com.example.sistemaannedecor2.Conexiones.VentasConexion;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ public class VentaService {
     public VentaService() {
     }
     public Venta Save(Venta v){
-        return VentasConexion.save(v);
+        return VentasConexion.saveCortina(v);
     }
     public Venta findById(Integer i){
         return VentasConexion.findById(i);
@@ -30,5 +29,8 @@ public class VentaService {
     public List<Venta> findAll(){
         return VentasConexion.findAll();
     }
-    
+
+    public List<Cortina> SaveCortinasVenta(int Id,List<Cortina> cortinas) {
+        return VentasConexion.SaveCortinasVenta(Id,cortinas);
+    }
 }

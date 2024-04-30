@@ -18,8 +18,8 @@ public class ClienteController {
         this.clienteService = cs;
     }
 
-    @GetMapping("/{str}/{Nombre}")
-    public Cliente findClienteByName(@PathVariable String str,@PathVariable String Nombre){
+    @GetMapping("/str/{Nombre}")
+    public Cliente findClienteByName(@PathVariable String Nombre){
         return ClienteService.findByName(Nombre);
     }
     @GetMapping
@@ -39,7 +39,7 @@ public class ClienteController {
         clienteService.delete(id);
     }
     @GetMapping("/{Id}")
-    public Cliente buscarClientePorId(Integer Id){
+    public Cliente buscarClientePorId(@PathVariable Integer Id){
             return clienteService.findById(Id);
     }
 

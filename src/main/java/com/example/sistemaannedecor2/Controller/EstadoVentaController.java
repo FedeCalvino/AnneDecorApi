@@ -16,7 +16,7 @@ public class EstadoVentaController {
     private EstadoVentaService estadoVentaService;
 
     public EstadoVentaController() {
-        //this.estadoVentaService = evs;
+        this.estadoVentaService = new EstadoVentaService();
     }
     /*   @GetMapping("/{idEstadoVenta}")
     public EstadoVenta buscarEstadoVentaPorId(@PathVariable int idEstadoVenta){

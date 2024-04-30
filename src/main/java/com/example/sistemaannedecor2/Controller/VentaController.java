@@ -1,6 +1,7 @@
 package com.example.sistemaannedecor2.Controller;
 
 import com.example.sistemaannedecor2.Clases.Cliente;
+import com.example.sistemaannedecor2.Clases.Cortina;
 import com.example.sistemaannedecor2.Clases.Venta;
 import com.example.sistemaannedecor2.Service.ClienteService;
 import com.example.sistemaannedecor2.Service.VentaService;
@@ -30,14 +31,17 @@ public class VentaController {
     public void ActualizarVenta(@RequestBody Venta venta){
         ventaService.update(venta);
     }
-    @DeleteMapping({"/id"})
+    @DeleteMapping({"/{id}"})
     public void eliminarVenta(@PathVariable int id){
         ventaService.delete(id);
     }
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public Venta buscarVentaPorId(@PathVariable int id){
         return ventaService.findById(id);
     }
-
+    @PostMapping("/{idCortina}")
+    public List<Cortina> AgregarCortinasAVenta(@PathVariable int idCortina,@RequestBody List<Cortina> ventas){
+        return ventaService.SaveCortinasVenta(idCortina,ventas);
+    }
     }
 

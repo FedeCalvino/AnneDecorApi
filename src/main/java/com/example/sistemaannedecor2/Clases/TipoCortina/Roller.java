@@ -13,16 +13,18 @@ import com.example.sistemaannedecor2.Clases.TipoTela;
  * @author calvi
  */
 public class Roller extends Cortina {
-    
+
     public double LargoCadena;
     public boolean CadenaMetalica;
     public int Tubo;
-    
-    public Roller(double Alto, double largo, Boolean motorizada, TipoTela tela, double largoCadena, boolean cadenaMetalica, int tubo, int precio) {
-        super(Alto, largo, motorizada, tela, precio);
-        this.CadenaMetalica=cadenaMetalica;
-        this.LargoCadena=largoCadena;
-        this.Tubo=tubo;
+    private byte trueBite = 1;
+    private byte falseBite = 0;
+
+    public Roller(String Alto, String largo, Boolean motorizada, int Idtela, double largoCadena, boolean cadenaMetalica, int tubo) {
+        super(Alto, largo, motorizada, Idtela);
+        LargoCadena = largoCadena;
+        CadenaMetalica = cadenaMetalica;
+        Tubo = tubo;
     }
 
     public double getLargoCadena() {
@@ -32,6 +34,11 @@ public class Roller extends Cortina {
     public boolean isCadenaMetalica() {
         return CadenaMetalica;
     }
+    public Byte isCadenaMetalicaByte() {
+        if(CadenaMetalica) return trueBite;
+        return falseBite;
+    }
+
 
     public int getTubo() {
         return Tubo;

@@ -16,8 +16,8 @@ public class SistemaAnneDecor2Application {
     static VentaService vs = new VentaService();
     public static void main(String[] args) throws ParseException {
         //Conexion.createTables();
-        List<Venta> listita = vs.findAll();
-        vs.Save(new Venta(1,1222));
+        //List<Venta> listita = vs.findAll();
+        //vs.Save(new Venta(1,1222));
         //clienteService.Save(new Cliente(998877663,"John Doe", 12345678,"pureba 1300 esq verdi"));
         SpringApplication.run(SistemaAnneDecor2Application.class, args);
 

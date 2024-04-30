@@ -24,7 +24,7 @@ public class ConexionEstadoVenta implements IConexion<EstadoVenta>{
     private byte falseBite = 0;
 
     @Override
-    public EstadoVenta save(EstadoVenta ev) {
+    public EstadoVenta saveCortina(EstadoVenta ev) {
         java.sql.Connection conexion=null;
         try{
             conexion = (java.sql.Connection) Conexion.GetConexion();
@@ -120,17 +120,12 @@ public class ConexionEstadoVenta implements IConexion<EstadoVenta>{
             }else{
                 ps.setInt(3,falseBite);
             }
-            if(ev.Pagada) {
+            if(ev.Facturado) {
                 ps.setByte(4,trueBite);
             }else{
                 ps.setInt(4,falseBite);
             }
-            if(ev.Facturado) {
-                ps.setByte(5,trueBite);
-            }else{
-                ps.setInt(5,falseBite);
-            }
-
+            ps.setInt(5,ev.getId());
             ps.execute();
 
         }catch(Exception e){
@@ -165,7 +160,33 @@ public class ConexionEstadoVenta implements IConexion<EstadoVenta>{
 
     @Override
     public List<EstadoVenta> findAll() {
-        return List.of();
+        List<EstadoVenta> ret = new ArrayList<>();
+        java.sql.Connection connection = null;
+        EstadoVenta Ev = null;
+        try{
+            connection = (java.sql.Connection) Conexion.GetConexion();
+            PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                Ev = new EstadoVenta();
+                if(rs.getByte(2)==1) Ev.setArmada(true);
+                if(rs.getByte(3)==1) Ev.setInstalada(true);
+                if(rs.getByte(4)==1) Ev.setPagada(true);
+                if(rs.getByte(5)==1) Ev.setFacturado(true);;
+
+                Ev.setId(rs.getInt(1));
+                ret.add(Ev);
+            }
+        }catch(Exception e){
+
+        }finally{
+            try{
+                connection.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        return ret;
     }
 
     public EstadoVenta findByIdVenta(Integer i) {
@@ -181,7 +202,7 @@ public class ConexionEstadoVenta implements IConexion<EstadoVenta>{
                 if(rs.getByte(2)==1) Ev.setArmada(true);
                 if(rs.getByte(3)==1) Ev.setInstalada(true);
                 if(rs.getByte(4)==1) Ev.setPagada(true);
-                if(rs.getByte(5)==1) Ev.set=true;
+                if(rs.getByte(5)==1) Ev.setFacturado(true);;
 
                 Ev.setId(rs.getInt(1));
             }

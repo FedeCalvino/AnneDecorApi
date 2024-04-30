@@ -1,8 +1,6 @@
 package com.example.sistemaannedecor2.Service;
 
-import com.example.sistemaannedecor2.Clases.Cliente;
 import com.example.sistemaannedecor2.Clases.EstadoVenta;
-import com.example.sistemaannedecor2.Conexiones.ClienteConexion;
 import com.example.sistemaannedecor2.Conexiones.ConexionEstadoVenta;
 
 import java.util.List;
@@ -16,7 +14,7 @@ public class EstadoVentaService {
     }
 
     public EstadoVenta Save(EstadoVenta ev){
-        return EVConexion.save(ev);
+        return EVConexion.saveCortina(ev);
     }
     public EstadoVenta findById(Integer i){
         return EVConexion.findById(i);

@@ -10,8 +10,8 @@ public class EstadoVenta {
     public boolean Facturado;
 
 
-    public Byte TrueByte = 1;
-    public Byte FalseByte = 0;
+    private final Byte TrueByte = 1;
+    private final Byte FalseByte = 0;
 
 
     public EstadoVenta() {
@@ -81,6 +81,9 @@ public class EstadoVenta {
     }
 
     public void setPagada(boolean Pagada) {
+        this.Pagada = Pagada;
+    }
+    public void setFacturado(boolean Pagada) {
         this.Pagada = Pagada;
     }
     
