@@ -30,7 +30,7 @@ public class VentaService {
         return VentasConexion.findAll();
     }
 
-    public List<Cortina> SaveCortinasVenta(int Id,List<Cortina> cortinas) {
-        return VentasConexion.SaveCortinasVenta(Id,cortinas);
+    public Cortina SaveCortinasVenta(int IdCortina,int VentaId) {
+        return VentasConexion.SaveCortinaVenta(IdCortina,VentaId);
     }
 }

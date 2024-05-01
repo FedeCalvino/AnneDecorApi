@@ -28,7 +28,7 @@ private static final String SQL_DELETE = "DELETE FROM CORTINAS WHERE ID = ?";
 private static final String SQL_UPDATE = "UPDATE CORTINAS SET ALTO = ?, ANCHO = ? , TIPO_TELA_ID = ? , MOTORIZADA = ? WHERE ID = ?";
 private static List<Cortina> cortinas = new ArrayList<Cortina>();
 private static final String SQL_SELECT_ALL = "SELECT * FROM CORTINAS";
-private static final String SQL_SELECT_BY_ID = "SELECT * FROM CORTINAS WHERE CORTINA_ID = ?";
+private static final String SQL_SELECT_BY_ID = "SELECT * FROM CORTINAS WHERE ID = ?";
 
 private byte trueBite = 1;
 private byte falseBite = 0;
@@ -43,7 +43,7 @@ private byte falseBite = 0;
             conexion = (java.sql.Connection) Conexion.GetConexion();
             PreparedStatement ps = conexion.prepareStatement(SQL_INSERT_CORTINA, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, C.getAlto());
-            ps.setString(2, C.getAncho());
+            ps.setNString(2, C.getAncho());
             ps.setInt(3, C.GetTipoTelaId());
             EstadoCortina ec = new EstadoCortina();
             int IdEstado = estadoCc.saveCortina(ec).getId();
@@ -86,7 +86,7 @@ private byte falseBite = 0;
             ps = conexion.prepareStatement(SQL_INSERT_ROLLER, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idC);
             ps.setInt(3, R.getTubo());
-            ps.setDouble(4, R.getLargoCadena());
+            ps.setNString(4, R.getLargoCadena());
             ps.setByte(2,R.isCadenaMetalicaByte());
 
             ps.execute();
@@ -117,14 +117,23 @@ private byte falseBite = 0;
             statement.setInt(1,id);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
-                 c = new Cortina (rs.getNString(2),rs.getNString(3),true, rs.getInt(5));
-                 c.setTela(tipoTelaC.findById(rs.getInt(4)));
-                 c.setId(rs.getInt(1));
-                 c.setEstado(estadoCc.findById(rs.getInt(5)));
+                if(rs.getByte(6)==1){
+                    c = new Cortina (rs.getString(2),rs.getString(3),true, rs.getInt(5));
+                    c.setTela(tipoTelaC.findById(rs.getInt(4)));
+                    c.setId(rs.getInt(1));
+                    c.setEstado(estadoCc.findById(rs.getInt(5)));
+                    cortinas.add(c);
+                }else{
+                    c = new Cortina (rs.getNString(2),rs.getNString(3),false, rs.getInt(5));
+                    c.setTela(tipoTelaC.findById(rs.getInt(4)));
+                    c.setId(rs.getInt(1));
+                    c.setEstado(estadoCc.findById(rs.getInt(5)));
+                    cortinas.add(c);
+                }
             }
 
         }catch(Exception e){
-
+            e.printStackTrace();
         }finally{
             try{
                 connection.close();

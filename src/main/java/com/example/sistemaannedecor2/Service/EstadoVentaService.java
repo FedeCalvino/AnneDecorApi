@@ -2,9 +2,10 @@ package com.example.sistemaannedecor2.Service;
 
 import com.example.sistemaannedecor2.Clases.EstadoVenta;
 import com.example.sistemaannedecor2.Conexiones.ConexionEstadoVenta;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class EstadoVentaService {
 
     private final com.example.sistemaannedecor2.Conexiones.ConexionEstadoVenta EVConexion;

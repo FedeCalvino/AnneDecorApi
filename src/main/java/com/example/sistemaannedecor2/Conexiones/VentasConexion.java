@@ -10,6 +10,7 @@ import com.example.sistemaannedecor2.Clases.Cortina;
 import com.example.sistemaannedecor2.Clases.EstadoVenta;
 import com.example.sistemaannedecor2.Clases.Venta;
 import com.example.sistemaannedecor2.Service.ClienteService;
+import com.example.sistemaannedecor2.Service.CortinaService;
 import com.example.sistemaannedecor2.Service.EstadoVentaService;
 import com.sun.jdi.connect.spi.Connection;
 
@@ -43,6 +44,7 @@ public class VentasConexion implements IConexion<Venta> {
     private List<Venta> ventas=new ArrayList<>();
     private ClienteService clienteService = new ClienteService();
     private EstadoVentaService ServicioEstadoVenta=new EstadoVentaService();
+    private CortinaService CortinaService =new CortinaService();
 
     @Override
     public Venta saveCortina(Venta v){
@@ -178,7 +180,33 @@ public class VentasConexion implements IConexion<Venta> {
         return ventas;
     }
 
-    public List<Cortina> SaveCortinasVenta(int idVenta ,List<Cortina> cortinas) {
+    public Cortina SaveCortinaVenta(int Idcortina , int idVenta) {
+        Cortina c=null;
+        java.sql.Connection conexion=null;
+        try{
+            conexion = (java.sql.Connection) Conexion.GetConexion();
+            PreparedStatement ps = conexion.prepareStatement(SQL_ADD_CORTINA_VENTA);
+            Venta v = this.findById(idVenta);
+            c = CortinaService.findById(Idcortina);
+            if(v!=null) {
+                ps.setInt(1, idVenta);
+                ps.setInt(2, c.getId());
+                ps.execute();
+                v.AddCortina(c);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            try{
+                conexion.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        return c;
+    }
+
+    public List<Cortina> SaveCortinasVenta(int idVenta , List<Cortina> cortinas) {
         java.sql.Connection conexion=null;
         try{
             conexion = (java.sql.Connection) Conexion.GetConexion();
@@ -187,12 +215,10 @@ public class VentasConexion implements IConexion<Venta> {
             Venta v = this.findById(idVenta);
             while (it.hasNext()) {
                 Cortina c = it.next();
-                if (c != null){
-                    ps.setInt(1, c.getId());
-                    ps.setInt(1, c.getId());
+                if (c != null && v!=null){
+                    ps.setInt(1, idVenta);
+                    ps.setInt(2, c.getId());
                     v.AddCortina(c);
-                }else {
-                    return null;
                 }
             }
         }catch(Exception e){

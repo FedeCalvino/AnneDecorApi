@@ -15,8 +15,8 @@ public class EstadoCortinaController {
 
     private EstadoCortinaService estadoCortinaService;
 
-    public EstadoCortinaController() {
-        this.estadoCortinaService = new EstadoCortinaService();
+    public EstadoCortinaController(EstadoCortinaService es) {
+        this.estadoCortinaService = es;
     }
 
     @GetMapping

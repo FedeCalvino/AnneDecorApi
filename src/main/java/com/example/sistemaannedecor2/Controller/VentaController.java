@@ -21,6 +21,7 @@ public class VentaController {
     }
     @GetMapping
     public List<Venta> findAllVenta(){
+        System.out.println("Entro");
         return ventaService.findAll();
     }
     @PostMapping
@@ -39,9 +40,12 @@ public class VentaController {
     public Venta buscarVentaPorId(@PathVariable int id){
         return ventaService.findById(id);
     }
-    @PostMapping("/{idCortina}")
-    public List<Cortina> AgregarCortinasAVenta(@PathVariable int idCortina,@RequestBody List<Cortina> ventas){
-        return ventaService.SaveCortinasVenta(idCortina,ventas);
+    @PostMapping("/{idCortina}/{idVenta}")
+    public Cortina AgregarCortinasAVenta(@PathVariable int idCortina,@PathVariable int idVenta){
+        System.out.println("Entro");
+        System.out.println(idCortina);
+        return ventaService.SaveCortinasVenta(idCortina,idVenta);
     }
+
     }
 
