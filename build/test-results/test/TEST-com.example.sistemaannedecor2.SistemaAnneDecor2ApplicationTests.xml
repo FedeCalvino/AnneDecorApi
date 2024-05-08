@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.sistemaannedecor2.SistemaAnneDecor2ApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-05-08T20:07:39" hostname="DESKTOP-553OBIJ" time="0.751">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.example.sistemaannedecor2.SistemaAnneDecor2ApplicationTests" time="0.751"/>
+  <system-out><![CDATA[17:07:37.667 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.sistemaannedecor2.SistemaAnneDecor2ApplicationTests]: SistemaAnneDecor2ApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+17:07:37.773 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.sistemaannedecor2.SistemaAnneDecor2Application for test class com.example.sistemaannedecor2.SistemaAnneDecor2ApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.5)
+
+2024-05-08T17:07:38.137-03:00  INFO 11200 --- [SistemaAnneDecor2] [    Test worker] c.e.s.SistemaAnneDecor2ApplicationTests  : Starting SistemaAnneDecor2ApplicationTests using Java 20.0.2 with PID 11200 (started by calvi in C:\Users\calvi\OneDrive\Desktop\Nueva carpeta (16)\SistemaAnneDecor)
+2024-05-08T17:07:38.139-03:00  INFO 11200 --- [SistemaAnneDecor2] [    Test worker] c.e.s.SistemaAnneDecor2ApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2024-05-08T17:07:39.259-03:00  INFO 11200 --- [SistemaAnneDecor2] [    Test worker] c.e.s.SistemaAnneDecor2ApplicationTests  : Started SistemaAnneDecor2ApplicationTests in 1.326 seconds (process running for 2.419)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
