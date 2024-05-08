@@ -17,12 +17,13 @@ public class ClienteConexion implements IConexion<Cliente>{
 
     static final String SQL_BY_ID = "SELECT * FROM CLIENTES WHERE ID = ?";
     static final String SQL_BY_NAME = "SELECT ID,RUT,NOMBRE,TELEFONO,DIRECCION FROM CLIENTES WHERE NOMBRE = ?";
+    static final String SQL_LIKE_NAME = "SELECT ID, RUT, NOMBRE, TELEFONO, DIRECCION FROM CLIENTES WHERE NOMBRE LIKE '%' + ? + '%'";
     private static final String SQL_SELECT_ALL = "SELECT * FROM CLIENTES";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM CLIENTES WHERE ID = ?";
     private static final String SQL_DELETE = "DELETE FROM CLIENTES WHERE ID = ?";
     private static final String SQL_UPDATE = "UPDATE CLIENTES SET RUT = ?, NOMBRE = ? , TELEFONO = ? , DIRECCION = ? WHERE ID = ?";
     private static final String SQL_INSERT = "INSERT INTO CLIENTES (RUT,NOMBRE,TELEFONO,DIRECCION) VALUES (?,?,?,?)";
-    private List<Cliente> Clientes = new ArrayList<Cliente>();
+
     @Override
     public Cliente saveCortina(Cliente cliente) {
         java.sql.Connection connection = null;
@@ -153,6 +154,7 @@ public class ClienteConexion implements IConexion<Cliente>{
     }
     @Override
     public List<Cliente> findAll() {
+        List<Cliente> Clientes = new ArrayList<Cliente>();
         Cliente c =null;
         java.sql.Connection connection = null;
         try{
@@ -175,5 +177,32 @@ public class ClienteConexion implements IConexion<Cliente>{
             }
         }
         return Clientes;
+    }
+
+    public List<Cliente> findLikeName(String name) {
+        java.sql.Connection connection = null;
+        List<Cliente> clientes = new ArrayList<>();
+        Cliente c=null;
+
+        try{
+            connection = (java.sql.Connection) Conexion.GetConexion();
+            PreparedStatement statement = connection.prepareStatement(SQL_LIKE_NAME);
+            statement.setString(1,name);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                c = new Cliente (rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5));
+                clientes.add(c);
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            try{
+                connection.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        return clientes;
     }
 }

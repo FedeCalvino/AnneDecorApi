@@ -21,14 +21,14 @@ private static TipoTelaConexion tipoTelaC = new TipoTelaConexion();
 
 private static ConexionEstadoCortina estadoCc = new ConexionEstadoCortina();
 
-private static final String SQL_INSERT_CORTINA = "INSERT INTO CORTINAS(ALTO,ANCHO,TIPO_TELA_ID,ESTADO_CORTINA_ID,MOTORIZADA) VALUES(?,?,?,?,?)";
+private static final String SQL_INSERT_CORTINA = "INSERT INTO CORTINAS(ALTO,ANCHO,TIPO_TELA_ID,ESTADO_CORTINA_ID,MOTORIZADA,AMBIENTE) VALUES(?,?,?,?,?,?)";
 private static final String SQL_INSERT_ROLLER = "INSERT INTO ROLLER(ID_CORTINA,CADENA_METALICA,CANO,LARGO_CADENA) VALUES(?,?,?,?)";
 
-private static final String SQL_DELETE = "DELETE FROM CORTINAS WHERE ID = ?";
-private static final String SQL_UPDATE = "UPDATE CORTINAS SET ALTO = ?, ANCHO = ? , TIPO_TELA_ID = ? , MOTORIZADA = ? WHERE ID = ?";
+private static final String SQL_DELETE = "DELETE FROM CORTINAS WHERE ID_CORTINA = ?";
+private static final String SQL_UPDATE = "UPDATE CORTINAS SET ALTO = ?, ANCHO = ? , TIPO_TELA_ID = ? , MOTORIZADA = ? WHERE ID_CORTINA = ?";
 private static List<Cortina> cortinas = new ArrayList<Cortina>();
 private static final String SQL_SELECT_ALL = "SELECT * FROM CORTINAS";
-private static final String SQL_SELECT_BY_ID = "SELECT * FROM CORTINAS WHERE ID = ?";
+private static final String SQL_SELECT_BY_ID = "SELECT * FROM CORTINAS WHERE ID_CORTINA = ?";
 
 private byte trueBite = 1;
 private byte falseBite = 0;
@@ -45,7 +45,9 @@ private byte falseBite = 0;
             ps.setString(1, C.getAlto());
             ps.setNString(2, C.getAncho());
             ps.setInt(3, C.GetTipoTelaId());
+            ps.setString(6,C.getAmbiente());
             EstadoCortina ec = new EstadoCortina();
+            C.setEstado(ec);
             int IdEstado = estadoCc.saveCortina(ec).getId();
             ps.setInt(4,IdEstado);
             if(C.getMotorizada()){
@@ -59,7 +61,7 @@ private byte falseBite = 0;
             while(rs.next()){
                 C.setId(rs.getInt(1));
             }
-            C.setEstado(ec);
+
 
         }catch(Exception e){
             e.printStackTrace();
@@ -70,13 +72,17 @@ private byte falseBite = 0;
                 
             }
         }
+        System.out.println(C.getId());
         return C;
     }
 
 
 
-    public Roller saverRoller(Roller R) {
-        Cortina C = new Cortina(R.getAlto(),R.getAncho(),R.getMotorizada(),R.IdTipoTela);
+    public Cortina saverRoller(Roller R) {
+        System.out.println(R.IdTipoTela);
+        System.out.println(R.getAmbiente());
+        Cortina C = new Cortina(R.getAlto(),R.getAncho(),R.getMotorizada(),R.IdTipoTela,R.getAmbiente());
+        System.out.println(C.getAmbiente());
         int idC = this.saveCortina(C).getId();
         java.sql.Connection conexion=null;
         try{
@@ -104,7 +110,7 @@ private byte falseBite = 0;
 
             }
         }
-        return R;
+        return C;
     }
 
     @Override
@@ -118,13 +124,13 @@ private byte falseBite = 0;
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 if(rs.getByte(6)==1){
-                    c = new Cortina (rs.getString(2),rs.getString(3),true, rs.getInt(5));
+                    c = new Cortina (rs.getString(2),rs.getString(3),true, rs.getInt(5),rs.getString(7));
                     c.setTela(tipoTelaC.findById(rs.getInt(4)));
                     c.setId(rs.getInt(1));
                     c.setEstado(estadoCc.findById(rs.getInt(5)));
                     cortinas.add(c);
                 }else{
-                    c = new Cortina (rs.getNString(2),rs.getNString(3),false, rs.getInt(5));
+                    c = new Cortina (rs.getString(2),rs.getString(3),false, rs.getInt(5),rs.getString(7));
                     c.setTela(tipoTelaC.findById(rs.getInt(4)));
                     c.setId(rs.getInt(1));
                     c.setEstado(estadoCc.findById(rs.getInt(5)));
@@ -199,13 +205,13 @@ private byte falseBite = 0;
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 if(rs.getByte(6)==1){
-                    Cortina c = new Cortina (rs.getNString(2),rs.getNString(3),true, rs.getInt(5));
+                    Cortina c = new Cortina (rs.getNString(2),rs.getNString(3),true, rs.getInt(5),rs.getString(7));
                     c.setTela(tipoTelaC.findById(rs.getInt(4)));
                     c.setId(rs.getInt(1));
                     c.setEstado(estadoCc.findById(rs.getInt(5)));
                     cortinas.add(c);
                 }else{
-                    Cortina c = new Cortina (rs.getNString(2),rs.getNString(3),false, rs.getInt(5));
+                    Cortina c = new Cortina (rs.getNString(2),rs.getNString(3),false, rs.getInt(5),rs.getString(7));
                     c.setTela(tipoTelaC.findById(rs.getInt(4)));
                     c.setId(rs.getInt(1));
                     c.setEstado(estadoCc.findById(rs.getInt(5)));

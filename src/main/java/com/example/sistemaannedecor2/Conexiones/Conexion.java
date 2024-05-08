@@ -5,12 +5,11 @@ package com.example.sistemaannedecor2.Conexiones;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Driver;
 
 public class Conexion {
     private static final String DRIVER="com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static final String URL= "jdbc:sqlserver:localhost;databaseName=SistemaCortinas";
-    private static final String connectionUrl = "jdbc:sqlserver://localhost.\\SQLEXPRESS;user=SQLAnneDecor;password=SQLAnneDecor;databaseName=SistemaCortinas;trustServerCertificate=true;encrypt=true";
+    private static final String connectionUrl = "jdbc:sqlserver://localhost.\\SQLEXPRESS;user=SQLAnneDecor;password=SQLAnneDecor;databaseName=SistemaCortinas;encrypt=true;trustServerCertificate=true;";
     private static final String USER="SQLAnneDecor";
     private static final String PASSWORD="SQLAnneDecor";
 

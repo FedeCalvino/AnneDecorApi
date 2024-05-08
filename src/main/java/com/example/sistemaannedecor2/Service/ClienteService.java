@@ -19,6 +19,10 @@ public class ClienteService{
         return ClienteConexion.findByName(name);
     }
 
+    public static List<Cliente> findLikeName(String name) {
+        return ClienteConexion.findLikeName(name);
+    }
+
     public Cliente Save(Cliente c){
         return ClienteConexion.saveCortina(c);
     }

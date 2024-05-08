@@ -5,8 +5,10 @@ import com.example.sistemaannedecor2.Service.ClienteService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.CollationKey;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5174")
 @RestController
 @RequestMapping("/Cliente")
 
@@ -22,6 +24,12 @@ public class ClienteController {
     public Cliente findClienteByName(@PathVariable String Nombre){
         return ClienteService.findByName(Nombre);
     }
+
+    @GetMapping("/strL/{Nombre}")
+    public List<Cliente> findClienteLikeName(@PathVariable String Nombre){
+        return ClienteService.findLikeName(Nombre);
+    }
+
     @GetMapping
     public List<Cliente> findAllCliente(){
         return clienteService.findAll();
@@ -30,14 +38,17 @@ public class ClienteController {
     public Cliente GuardarCliente(@RequestBody Cliente cliente){
         return clienteService.Save(cliente);
     }
+
     @PutMapping
     public void ActualizarCliente(@RequestBody Cliente cliente){
         clienteService.update(cliente);
     }
+
     @DeleteMapping({"/{id}"})
     public void eliminarCliente(@PathVariable int id){
         clienteService.delete(id);
     }
+
     @GetMapping("/{Id}")
     public Cliente buscarClientePorId(@PathVariable Integer Id){
             return clienteService.findById(Id);

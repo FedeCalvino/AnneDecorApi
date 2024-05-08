@@ -19,7 +19,8 @@ public class CortinaService {
     public Cortina Save(Cortina c){
         return CortinaConexion.saveCortina(c);
     }
-    public Roller SaveRoller(Roller c){
+
+    public Cortina SaveRoller(Roller c){
         return CortinaConexion.saverRoller(c);
     }
 

@@ -3,12 +3,15 @@ package com.example.sistemaannedecor2.Controller;
 import com.example.sistemaannedecor2.Clases.Cliente;
 import com.example.sistemaannedecor2.Clases.Cortina;
 import com.example.sistemaannedecor2.Clases.Venta;
+import com.example.sistemaannedecor2.Dto.DtoVenta;
+import com.example.sistemaannedecor2.Dto.DtoVentacortina;
 import com.example.sistemaannedecor2.Service.ClienteService;
 import com.example.sistemaannedecor2.Service.VentaService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5175")
 @RestController
 @RequestMapping("/Ventas")
 
@@ -28,6 +31,7 @@ public class VentaController {
     public Venta GuardarVenta(@RequestBody Venta venta){
         return ventaService.Save(venta);
     }
+
     @PutMapping
     public void ActualizarVenta(@RequestBody Venta venta){
         ventaService.update(venta);
@@ -45,6 +49,15 @@ public class VentaController {
         System.out.println("Entro");
         System.out.println(idCortina);
         return ventaService.SaveCortinasVenta(idCortina,idVenta);
+    }
+    @GetMapping("/Dto")
+    public List<DtoVenta> findAllVentaDto(){
+        return ventaService.findAllDto();
+    }
+    @GetMapping("/DtoVentaCor/{IdVenta}")
+    public List<DtoVentacortina> findAllVentaDto(@PathVariable int IdVenta){
+        System.out.println("Entro");
+        return ventaService.findAllDtoVC(IdVenta);
     }
 
     }

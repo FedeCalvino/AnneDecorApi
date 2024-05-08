@@ -6,6 +6,7 @@ public class Cortina {
     int Id;
     String Alto;
     public int IdTipoTela;
+    public String Ambiente;
     String Ancho;
     TipoTela tela;
     public EstadoCortina Estado;
@@ -19,11 +20,15 @@ public class Cortina {
         this.tela = tela;
     }
 
-    public Cortina(String Alto, String largo, Boolean motorizada, int Idtela) {
+    public String getAmbiente() {
+        return Ambiente;
+    }
+
+    public Cortina(String Alto, String Ancho, Boolean motorizada, int Idtela, String Ambiente) {
         this.IdTipoTela=Idtela;
         this.Alto = Alto;
-        this.tela=tela;
-        this.Ancho = largo;
+        this.Ancho = Ancho;
+        this.Ambiente = Ambiente;
         this.motorizada = motorizada;
     }
 
@@ -35,7 +40,7 @@ public class Cortina {
                 +"medidas "+this.Ancho+"x"+this.Alto+" ";
     }
     public int GetTipoTelaId(){
-        return tela.getId();
+        return IdTipoTela;
     }
             
     public int GetEstadoCortinaId(){

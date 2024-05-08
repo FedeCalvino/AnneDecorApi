@@ -15,11 +15,12 @@ import java.util.List;
 
 @SpringBootApplication
 public class SistemaAnneDecor2Application {
-    static com.example.sistemaannedecor2.Service.CortinaService CortinaService = new com.example.sistemaannedecor2.Service.CortinaService();
+    static VentaService ventaService = new VentaService();
     public static void main(String[] args) throws ParseException {
         //Conexion.createTables();
-
+        //JSONObject jsonObject = new JSONObject();
         //Cortina c = CortinaService.findById(2);
+        ventaService.findAllDtoVC(4);
         //List<Venta> listita = vs.findAll();
         //vs.Save(new Venta(1,1222));
         //clienteService.Save(new Cliente(998877663,"John Doe", 12345678,"pureba 1300 esq verdi"));

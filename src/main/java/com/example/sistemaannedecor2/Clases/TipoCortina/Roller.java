@@ -20,11 +20,11 @@ public class Roller extends Cortina {
     private byte trueBite = 1;
     private byte falseBite = 0;
 
-    public Roller(String Alto, String largo, Boolean motorizada, int Idtela, String largoCadena, boolean cadenaMetalica, int tubo) {
-        super(Alto, largo, motorizada, Idtela);
+    public Roller(String Ambiente,String Alto, String Ancho, Boolean motorizada, int Idtela, String largoCadena, boolean cadenaMetalica, int Tubo) {
+        super(Alto, Ancho, motorizada, Idtela,Ambiente);
         LargoCadena = largoCadena;
         CadenaMetalica = cadenaMetalica;
-        Tubo = tubo;
+        this.Tubo = Tubo;
     }
 
     public String getLargoCadena() {

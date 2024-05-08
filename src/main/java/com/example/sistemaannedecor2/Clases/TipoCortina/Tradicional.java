@@ -17,8 +17,8 @@ public class Tradicional extends Cortina {
     public int CantidadPaños;
 
 
-    public Tradicional(String Alto, String largo, Boolean motorizada, int Idtela, int cantidadPaños) {
-        super(Alto, largo, motorizada, Idtela);
+    public Tradicional(String Alto, String largo, Boolean motorizada, int Idtela, int cantidadPaños,String Ambiente) {
+        super(Alto, largo, motorizada, Idtela,Ambiente);
         CantidadPaños = cantidadPaños;
     }
 }
