@@ -12,7 +12,7 @@ import java.util.List;
  * @author calvi
  */
 public interface IConexion<T> {
-    T saveCortina(T t);
+    T save(T t);
     T findById(Integer id);
     void Update(T t);
     void delete(Integer id);

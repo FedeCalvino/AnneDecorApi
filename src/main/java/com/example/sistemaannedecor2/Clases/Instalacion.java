@@ -7,6 +7,7 @@ import java.util.Date;
 public class Instalacion {
     int Id;
     Venta venta;
+    int IdVenta;
     Date fecha;
     String Aclaraciones;
 

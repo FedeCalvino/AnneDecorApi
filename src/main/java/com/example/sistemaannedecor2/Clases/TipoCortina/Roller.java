@@ -17,14 +17,18 @@ public class Roller extends Cortina {
     public String LargoCadena;
     public boolean CadenaMetalica;
     public int Tubo;
+    public String Posicion;
+    public String LadoCadena;
     private byte trueBite = 1;
     private byte falseBite = 0;
 
-    public Roller(String Ambiente,String Alto, String Ancho, Boolean motorizada, int Idtela, String largoCadena, boolean cadenaMetalica, int Tubo) {
+    public Roller(String Ambiente,String Alto, String Ancho, Boolean motorizada, int Idtela, String largoCadena, boolean cadenaMetalica, int Tubo, String Posicion, String LadoCadena) {
         super(Alto, Ancho, motorizada, Idtela,Ambiente);
         LargoCadena = largoCadena;
         CadenaMetalica = cadenaMetalica;
         this.Tubo = Tubo;
+        this.Posicion = Posicion;
+        this.LadoCadena = LadoCadena;
     }
 
     public String getLargoCadena() {
@@ -55,7 +59,20 @@ public class Roller extends Cortina {
     public void setTubo(int Tubo) {
         this.Tubo = Tubo;
     }
-    
-    
-    
+
+    public String getPosicion() {
+        return Posicion;
+    }
+
+    public void setPosicion(String posicion) {
+        Posicion = posicion;
+    }
+
+    public void setLadoCadena(String ladoCadena) {
+        LadoCadena = ladoCadena;
+    }
+
+    public String getLadoCadena() {
+        return LadoCadena;
+    }
 }

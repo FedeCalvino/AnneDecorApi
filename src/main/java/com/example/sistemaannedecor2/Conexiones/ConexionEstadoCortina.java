@@ -22,7 +22,7 @@ public class ConexionEstadoCortina implements IConexion<EstadoCortina>{
     private byte falseBite = 0;
 
     @Override
-    public EstadoCortina saveCortina(EstadoCortina ev) {
+    public EstadoCortina save(EstadoCortina ev) {
         java.sql.Connection conexion=null;
         try{
             conexion = (java.sql.Connection) Conexion.GetConexion();

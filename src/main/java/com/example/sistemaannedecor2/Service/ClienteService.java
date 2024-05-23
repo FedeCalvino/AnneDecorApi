@@ -24,7 +24,7 @@ public class ClienteService{
     }
 
     public Cliente Save(Cliente c){
-        return ClienteConexion.saveCortina(c);
+        return ClienteConexion.saveCliente(c);
     }
 
 

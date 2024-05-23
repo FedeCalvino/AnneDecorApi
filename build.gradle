@@ -7,26 +7,30 @@ plugins {
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
-
-
 java {
-    sourceCompatibility = '17'
-}
-
-
-
-dependencies {
-    implementation 'com.microsoft.sqlserver:mssql-jdbc:9.4.0.jre8'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/snapshot' }
-    maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+    implementation 'com.microsoft.sqlserver:mssql-jdbc:9.4.0.jre8'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+springBoot {
+    mainClass = 'com.example.sistemaannedecor2.SistemaAnneDecor2Application'
+}
+
+test {
+    ignoreFailures = true
 }

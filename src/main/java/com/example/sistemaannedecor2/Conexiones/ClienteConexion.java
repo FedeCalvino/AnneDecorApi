@@ -17,15 +17,15 @@ public class ClienteConexion implements IConexion<Cliente>{
 
     static final String SQL_BY_ID = "SELECT * FROM CLIENTES WHERE ID = ?";
     static final String SQL_BY_NAME = "SELECT ID,RUT,NOMBRE,TELEFONO,DIRECCION FROM CLIENTES WHERE NOMBRE = ?";
-    static final String SQL_LIKE_NAME = "SELECT ID, RUT, NOMBRE, TELEFONO, DIRECCION FROM CLIENTES WHERE NOMBRE LIKE '%' + ? + '%'";
+    static final String SQL_LIKE_NAME = "SELECT TOP 5 ID, RUT, NOMBRE, TELEFONO, DIRECCION FROM CLIENTES WHERE NOMBRE LIKE '%' + ? + '%'";
     private static final String SQL_SELECT_ALL = "SELECT * FROM CLIENTES";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM CLIENTES WHERE ID = ?";
     private static final String SQL_DELETE = "DELETE FROM CLIENTES WHERE ID = ?";
     private static final String SQL_UPDATE = "UPDATE CLIENTES SET RUT = ?, NOMBRE = ? , TELEFONO = ? , DIRECCION = ? WHERE ID = ?";
     private static final String SQL_INSERT = "INSERT INTO CLIENTES (RUT,NOMBRE,TELEFONO,DIRECCION) VALUES (?,?,?,?)";
 
-    @Override
-    public Cliente saveCortina(Cliente cliente) {
+    public Cliente saveCliente(Cliente cliente) {
+        System.out.println(cliente.getRut());
         java.sql.Connection connection = null;
         try{
             connection = (java.sql.Connection) Conexion.GetConexion();
@@ -63,8 +63,8 @@ public class ClienteConexion implements IConexion<Cliente>{
             statement.setInt(1,id);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
-                c = new Cliente (rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5));
-                c.setId(id);
+                c = new Cliente (rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5));
+                c.setId(rs.getInt(1));
             }
 
         }catch(Exception e){
@@ -117,7 +117,8 @@ public class ClienteConexion implements IConexion<Cliente>{
             statement.setString(1,Name);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
-                c = new Cliente (rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5));
+                c = new Cliente (rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5));
+                c.setId(rs.getInt(1));
             }
 
         }catch(Exception e){
@@ -163,7 +164,8 @@ public class ClienteConexion implements IConexion<Cliente>{
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 //int id, int rut, String nombre, int numeroTelefono, String direccion
-                c = new Cliente (rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5));
+                c = new Cliente (rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5));
+                c.setId(rs.getInt(1));
                 Clientes.add(c);
             }
     
@@ -190,7 +192,8 @@ public class ClienteConexion implements IConexion<Cliente>{
             statement.setString(1,name);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
-                c = new Cliente (rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5));
+                c = new Cliente (rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5));
+                c.setId(rs.getInt(1));
                 clientes.add(c);
             }
 
@@ -204,5 +207,9 @@ public class ClienteConexion implements IConexion<Cliente>{
             }
         }
         return clientes;
+    }
+    @Override
+    public Cliente save(Cliente cliente) {
+        return null;
     }
 }

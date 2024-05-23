@@ -36,20 +36,23 @@ import java.util.ArrayList;
  */
 public class VentasConexion implements IConexion<Venta> {
 
-    private static final String SQL_SELECT_ALL_Dto = "select C.NOMBRE,C.ID,v.ID_VENTA,v.FECHA,v.PRECIO,ev.ARMADO,ev.FACTURADO,ev.INSTALADO,ev.PAGADO from VENTA v join CLIENTES c on c.ID=v.CLIENTE_ID join ESTADO_VENTA ev on ev.ID=V.ESTADO_VENTA_ID";
+    private static final String SQL_SELECT_ALL_Dto_by_Estado = "select C.NOMBRE,C.ID,v.ID_VENTA,v.FECHA,v.PRECIO,ev.ARMADO,ev.FACTURADO,ev.INSTALADO,ev.PAGADO,v.OBRA from VENTA v join CLIENTES c on c.ID=v.CLIENTE_ID join ESTADO_VENTA ev on ev.ID=V.ESTADO_VENTA_ID order by ARMADO asc,INSTALADO asc,PAGADO asc, FACTURADO asc";
+    private static final String SQL_SELECT_ALL_Dto_by_Fecha = "select C.NOMBRE,C.ID,v.ID_VENTA,v.FECHA,v.PRECIO,ev.ARMADO,ev.FACTURADO,ev.INSTALADO,ev.PAGADO,v.OBRA from VENTA v join CLIENTES c on c.ID=v.CLIENTE_ID join ESTADO_VENTA ev on ev.ID=V.ESTADO_VENTA_ID order by v.FECHA desc";
     private static final String SQL_BY_ID = "SELECT * FROM VENTA WHERE ID_VENTA = ?";
     private static final String SQL_SELECT_ALL="SELECT * FROM VENTA";
-    private static final String SQL_INSERT = "INSERT INTO VENTA(CLIENTE_ID,ESTADO_VENTA_ID,FECHA,PRECIO) VALUES(?,?,?,?)";
+    private static final String SQL_INSERT = "INSERT INTO VENTA(CLIENTE_ID,ESTADO_VENTA_ID,FECHA,PRECIO,OBRA) VALUES(?,?,?,?,?)";
     private static final String SQL_DELETE = "DELETE FROM VENTA WHERE ID_VENTA = ?";
     private static final String SQL_UPDATE = "UPDATE VENTA SET FECHA = ?, PRECIO = ? , CLIENTE_ID = ? WHERE ID_VENTA = ?";
     private static final String SQL_ADD_CORTINA_VENTA = "INSERT INTO VENTA_CORTINA(VENTA_ID,CORTINA_ID) VALUES(?,?)";
-    private static final String SQL_Select_All_VentaDto="select cor.AMBIENTE,cor.ALTO,cor.ANCHO,cor.MOTORIZADA,tt.NOMBRE,tt.COLOR,ec.ARMADO,ec.CANO_CORTADO,ec.PROBADO,ec.TELA_CORTADA,r.CANO,r.LARGO_CADENA,cor.ID_CORTINA " +
+    private static final String SQL_Select_All_VentaDto="select cor.AMBIENTE,cor.ALTO,cor.ANCHO,cor.MOTORIZADA,tt.NOMBRE,tt.COLOR,ec.ARMADO,ec.CANO_CORTADO,ec.PROBADO,ec.TELA_CORTADA,r.CANO,r.LARGO_CADENA,cor.ID_CORTINA,r.POSICION,r.LADO_CADENA " +
                                                         "from VENTA v join CLIENTES c on c.ID=v.CLIENTE_ID " +
                                                         "join VENTA_CORTINA vc on vc.VENTA_ID=v.ID_VENTA " +
                                                         "join CORTINAS cor on cor.ID_CORTINA=vc.CORTINA_ID  " +
                                                         "join ESTADO_CORTINA ec on ec.ID=V.ESTADO_VENTA_ID " +
                                                         "join TIPO_TELA tt on tt.ID=cor.TIPO_TELA_ID " +
                                                         "join ROLLER r on r.ID_CORTINA=cor.ID_CORTINA where v.ID_VENTA=?";
+
+    private static final String SQL_LIKE_VENTAS = "select C.NOMBRE,C.ID,v.ID_VENTA,v.FECHA,v.PRECIO,ev.ARMADO,ev.FACTURADO,ev.INSTALADO,ev.PAGADO,v.OBRA from VENTA v join CLIENTES c on c.ID=v.CLIENTE_ID join ESTADO_VENTA ev on ev.ID=V.ESTADO_VENTA_ID WHERE c.[NOMBRE] LIKE  '%' + ? + '%' order by v.FECHA desc";
 
     public static Connection conexion;
     private ClienteService clienteService = new ClienteService();
@@ -59,20 +62,22 @@ public class VentasConexion implements IConexion<Venta> {
     public Venta saveVenta(Venta v){
        java.sql.Connection conexion=null;
         try{
-            System.out.println(v.PrecioFinal);
+            System.out.println(v.getObra());
             conexion = (java.sql.Connection) Conexion.GetConexion();
             PreparedStatement ps = conexion.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
             System.out.println(v.getClienteIdNoPorCliente());
             Cliente c = clienteService.findById(v.getClienteIdNoPorCliente());
             System.out.println(c);
             if(c!=null) {
-                ps.setInt(1, c.getId());
+
                 EstadoVenta estado = new EstadoVenta();
                 int estadoId = ServicioEstadoVenta.Save(estado).id;
+                ps.setInt(1, c.getId());
                 ps.setInt(2, estadoId);
                 Date fecha = Date.valueOf(LocalDate.now());
                 ps.setDate(3, fecha);
                 ps.setInt(4, v.getPrecio());
+                ps.setString(5,v.getObra());
                 ps.execute();
                 v.setCliente(clienteService.findById(v.getClienteIdNoPorCliente()));
                 v.setEstadoVenta(estado);
@@ -98,7 +103,7 @@ public class VentasConexion implements IConexion<Venta> {
     }
 
     @Override
-    public Venta saveCortina(Venta venta) {
+    public Venta save(Venta venta) {
         return null;
     }
 
@@ -112,7 +117,7 @@ public class VentasConexion implements IConexion<Venta> {
             statement.setInt(1,id);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
-                v = new Venta(rs.getInt(2),rs.getInt(5));
+                v = new Venta(rs.getInt(2),rs.getInt(5),rs.getString(6));
                 v.setId(rs.getInt(1));
                 v.setFecha(rs.getDate(4));
                 v.setEstadoVenta(ServicioEstadoVenta.findById(rs.getInt(3)));
@@ -180,7 +185,7 @@ public class VentasConexion implements IConexion<Venta> {
             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
-                Venta v = new Venta(rs.getInt(2),rs.getInt(5));
+                Venta v = new Venta(rs.getInt(2),rs.getInt(5),rs.getString(6));
                 v.setId(rs.getInt(1));
                 v.setFecha(rs.getDate(4));
                 v.setEstadoVenta(ServicioEstadoVenta.findByIdVenta(rs.getInt(3)));
@@ -254,7 +259,7 @@ public class VentasConexion implements IConexion<Venta> {
         java.sql.Connection connection = null;
         try{
             connection = (java.sql.Connection) Conexion.GetConexion();
-            PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_Dto);
+            PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_Dto_by_Fecha);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 DtoVenta dtoV = new DtoVenta();
@@ -263,6 +268,7 @@ public class VentasConexion implements IConexion<Venta> {
                 dtoV.setIdVenata(rs.getInt(3));
                 dtoV.setFechaVenta(rs.getDate(4));
                 dtoV.setMonto(rs.getInt(5));
+                dtoV.setObra(rs.getString(10));
                 ObjEstadoColor Ec = GetEstadoColorVenta(rs.getByte(6),rs.getByte(7),rs.getByte(8),rs.getByte(9));
                 dtoV.setEstadoActual(Ec.getEstadoAct());
                 dtoV.setColorEstado(Ec.getColor());
@@ -306,7 +312,6 @@ public class VentasConexion implements IConexion<Venta> {
             statement.setInt(1, idVenta);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
-                System.out.println("1 cortina");
                 DtoVentacortina dtoC = new DtoVentacortina();
                 dtoC.setAmbiente(rs.getString(1));
                 dtoC.setAltoCortina(rs.getString(2));
@@ -315,8 +320,9 @@ public class VentasConexion implements IConexion<Venta> {
                 dtoC.setNombreTela(rs.getString(5));
                 dtoC.setColorTela(rs.getString(6));
                 dtoC.setCano(rs.getString(11));
-                dtoC.setCadena(rs.getString(12));
                 dtoC.setIdCortina(rs.getInt(13));
+                dtoC.setPosicion(rs.getString(14));
+                dtoC.setLadoCadena(rs.getString(15));
                 ObjEstadoColor objEc = GetEstadoColorCortina(rs.getByte(7),rs.getByte(8),rs.getByte(9),rs.getByte(10));
                 dtoC.setEstadoCortina(objEc.getEstadoAct());
                 CorinasventasDto.add(dtoC);
@@ -350,6 +356,39 @@ public class VentasConexion implements IConexion<Venta> {
             return new ObjEstadoColor("Sin probar","green");
         }
         return new ObjEstadoColor("Completa","green");
+    }
+
+    public List<DtoVenta> findAllDtoLike(String nombreCli) {
+        List<DtoVenta> Dtoventas=new ArrayList<>();
+        java.sql.Connection connection = null;
+        try{
+            connection = (java.sql.Connection) Conexion.GetConexion();
+            PreparedStatement statement = connection.prepareStatement(SQL_LIKE_VENTAS);
+            statement.setString(1, nombreCli);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                DtoVenta dtoV = new DtoVenta();
+                dtoV.setNombreCliente(rs.getString(1));
+                dtoV.setIdCliente(rs.getInt(2));
+                dtoV.setIdVenata(rs.getInt(3));
+                dtoV.setFechaVenta(rs.getDate(4));
+                dtoV.setMonto(rs.getInt(5));
+                dtoV.setObra(rs.getString(10));
+                ObjEstadoColor Ec = GetEstadoColorVenta(rs.getByte(6),rs.getByte(7),rs.getByte(8),rs.getByte(9));
+                dtoV.setEstadoActual(Ec.getEstadoAct());
+                dtoV.setColorEstado(Ec.getColor());
+                Dtoventas.add(dtoV);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            try{
+                connection.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        return Dtoventas;
     }
 }
 

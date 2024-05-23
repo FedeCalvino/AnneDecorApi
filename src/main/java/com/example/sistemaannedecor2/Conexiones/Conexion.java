@@ -8,10 +8,10 @@ import java.sql.DriverManager;
 
 public class Conexion {
     private static final String DRIVER="com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private static final String URL= "jdbc:sqlserver:localhost;databaseName=SistemaCortinas";
-    private static final String connectionUrl = "jdbc:sqlserver://localhost.\\SQLEXPRESS;user=SQLAnneDecor;password=SQLAnneDecor;databaseName=SistemaCortinas;encrypt=true;trustServerCertificate=true;";
-    private static final String USER="SQLAnneDecor";
-    private static final String PASSWORD="SQLAnneDecor";
+    private static final String URL= "jdbc:sqlserver:sqlserver.cz0se24qsz75.us-east-1.rds.amazonaws.com;databaseName=SistemaCortinas";
+    private static final String connectionUrl = "jdbc:sqlserver://annedecordatabase.database.windows.net:1433;database=AnneDecorDataBase;user=AnneDecor;password=anabistolfi1_;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+    private static final String USER="Admin504";
+    private static final String PASSWORD="perrotati1";
 
 
     private static final String SQL_DROP_CREATE_CORTINA = 

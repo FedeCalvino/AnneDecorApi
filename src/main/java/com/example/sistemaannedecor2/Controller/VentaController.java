@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5175")
+@CrossOrigin(origins = "http://localhost:5174")
 @RestController
 @RequestMapping("/Ventas")
 
@@ -53,6 +53,10 @@ public class VentaController {
     @GetMapping("/Dto")
     public List<DtoVenta> findAllVentaDto(){
         return ventaService.findAllDto();
+    }
+    @GetMapping("/Dto/{NombreCli}")
+    public List<DtoVenta> findAllVentaDto(@PathVariable String NombreCli){
+        return ventaService.findAllDtoLike(NombreCli);
     }
     @GetMapping("/DtoVentaCor/{IdVenta}")
     public List<DtoVentacortina> findAllVentaDto(@PathVariable int IdVenta){

@@ -18,13 +18,6 @@ public class Cliente {
         this.NumeroTelefono = NumeroTelefono;
     }
 
-    public Cliente(int id, int rut, String nombre, int numeroTelefono, String direccion) {
-        Id = id;
-        Rut = rut;
-        Nombre = nombre;
-        NumeroTelefono = numeroTelefono;
-        this.direccion = direccion;
-    }
 
     @Override
     public String toString() {

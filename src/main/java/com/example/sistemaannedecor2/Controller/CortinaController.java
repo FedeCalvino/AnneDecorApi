@@ -10,7 +10,7 @@ import com.example.sistemaannedecor2.Service.CortinaService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:5175")
+@CrossOrigin(origins = "https://anne-decor-react.vercel.app")
 @RestController
 @RequestMapping("/Cortinas")
 

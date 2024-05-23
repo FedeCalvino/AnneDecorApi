@@ -7,11 +7,16 @@ public class DtoVenta {
     public int IdCliente;
     public int IdVenata;
     public Date FechaVenta;
+    public String Obra;
     public int Monto;
     public String EstadoActual;
     public String ColorEstado;
 
     public DtoVenta() {
+    }
+
+    public void setObra(String obra) {
+        Obra = obra;
     }
 
     public void setNombreCliente(String nombreCliente) {

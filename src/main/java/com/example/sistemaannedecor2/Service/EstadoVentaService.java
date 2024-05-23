@@ -15,7 +15,7 @@ public class EstadoVentaService {
     }
 
     public EstadoVenta Save(EstadoVenta ev){
-        return EVConexion.saveCortina(ev);
+        return EVConexion.save(ev);
     }
     public EstadoVenta findById(Integer i){
         return EVConexion.findById(i);

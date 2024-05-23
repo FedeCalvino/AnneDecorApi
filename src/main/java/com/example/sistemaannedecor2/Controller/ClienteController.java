@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.CollationKey;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5174")
+@CrossOrigin(origins = {"https://anne-decor-react.vercel.app","http://localhost:5173"})
 @RestController
 @RequestMapping("/Cliente")
 

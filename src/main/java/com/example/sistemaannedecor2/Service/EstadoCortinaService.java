@@ -15,7 +15,7 @@ public class EstadoCortinaService {
     }
 
     public EstadoCortina Save(EstadoCortina ev){
-        return EcConexion.saveCortina(ev);
+        return EcConexion.save(ev);
     }
     public EstadoCortina findById(Integer i){
         return EcConexion.findById(i);

@@ -1,16 +1,25 @@
 package com.example.sistemaannedecor2.Dto;
 
+import java.text.DecimalFormat;
+
 public class DtoVentacortina {
     int IdCortina;
     String Ambiente;
-    String AltoCortina;
+    String AnchoAfuerAfuera;
     String AnchoCortina;
-    boolean Motorizada;
+    String AnchoCaño;
+    String cano;
+    String AltoCortina;
+    String AltoTela;
     String NombreTela;
     String ColorTela;
+    public String Cadena;
+    String LadoCadena;
     String EstadoCortina;
-    String cano;
-    String Cadena;
+    String Cantidad;
+    String Posicion;
+    String Detalle;
+    boolean Motorizada;
 
     private static byte trueByte = 1;
     private static byte falseByte = 0;
@@ -32,7 +41,7 @@ public class DtoVentacortina {
     }
 
     public String getCadena() {
-        return Cadena;
+        return this.Cadena;
     }
 
     public String getCano() {
@@ -46,6 +55,13 @@ public class DtoVentacortina {
         else return falseByte;
     }
 
+    public String getLadoCadena() {
+        return LadoCadena;
+    }
+
+    public void setLadoCadena(String ladoCadena) {
+        LadoCadena = ladoCadena;
+    }
 
     public String getAmbiente() {
         return Ambiente;
@@ -81,15 +97,29 @@ public class DtoVentacortina {
 
     public void setAltoCortina(String altoCortina) {
         AltoCortina = altoCortina;
+        DecimalFormat df = new DecimalFormat("#.####");
+        Double AltoTel = Double.parseDouble(altoCortina) + 0.30;
+        Double AltoCadena = Double.parseDouble(altoCortina) * 1.80;
+        this.AltoTela = df.format(AltoTel);
+        this.Cadena = (df.format(AltoCadena));
     }
 
-    public void setAnchoCortina(String anchoCortina) {
-        AnchoCortina = anchoCortina;
+    public void setAnchoCortina(String anchoAFAF) {
+        AnchoAfuerAfuera = anchoAFAF;
+        Double anchoCortina = Double.parseDouble(anchoAFAF)-0.035;
+        Double anchoCano = Double.parseDouble(anchoAFAF)+0.030;
+        DecimalFormat df = new DecimalFormat("#.####"); // Formato sin ceros adicionales en la parte decimal
+        this.AnchoCortina = df.format(anchoCortina);
+        this.AnchoCaño = df.format(anchoCano);
     }
 
     public void setMotorizada(Byte motorizada) {
         if(motorizada == trueByte) Motorizada = true;
         else Motorizada = false;
+    }
+
+    public void setPosicion(String posicion) {
+        Posicion = posicion;
     }
 
     public void setColorTela(String colorTela) {
@@ -102,5 +132,25 @@ public class DtoVentacortina {
 
     public void setEstadoCortina(String estadoCortina) {
         EstadoCortina = estadoCortina;
+    }
+
+    public String getAnchoAfuerAfuera() {
+        return AnchoAfuerAfuera;
+    }
+
+    public String getAnchoCaño() {
+        return AnchoCaño;
+    }
+
+    public String getAltoTela() {
+        return AltoTela;
+    }
+
+    public String getCantidad() {
+        return Cantidad;
+    }
+
+    public String getPosicion() {
+        return Posicion;
     }
 }

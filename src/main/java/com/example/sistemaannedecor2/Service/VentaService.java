@@ -43,4 +43,8 @@ public class VentaService {
     public List<DtoVentacortina> findAllDtoVC(int idVenta) {
         return VentasConexion.findAllDtoVC(idVenta);
     }
+
+    public List<DtoVenta> findAllDtoLike(String nombreCli) {
+        return VentasConexion.findAllDtoLike(nombreCli);
+    }
 }

@@ -18,9 +18,18 @@ public class Venta{
     EstadoVenta Estado;
     public java.sql.Date Fecha;
     public int PrecioFinal;
+    public String Obra;
 
     public int getClienteIdNoPorCliente(){
         return this.IdCliente;
+    }
+
+    public String getObra() {
+        return Obra;
+    }
+
+    public void setObra(String obra) {
+        Obra = obra;
     }
 
     public Venta() {
@@ -47,9 +56,10 @@ public class Venta{
 
 
 
-    public Venta(int IdCliente, int PrecioFinal){
+    public Venta(int IdCliente, int PrecioFinal,String Obra){
         this.IdCliente = IdCliente;
         this.PrecioFinal = PrecioFinal;
+        this.Obra = Obra;
     }
 
 
@@ -106,6 +116,5 @@ public class Venta{
     public void setListaCortinas(ArrayList<Cortina> cor) {
         this.cortinas = cor;
     }
-
 
 }

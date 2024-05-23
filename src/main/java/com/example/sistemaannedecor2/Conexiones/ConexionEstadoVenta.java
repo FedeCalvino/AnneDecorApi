@@ -24,7 +24,7 @@ public class ConexionEstadoVenta implements IConexion<EstadoVenta>{
     private byte falseBite = 0;
 
     @Override
-    public EstadoVenta saveCortina(EstadoVenta ev) {
+    public EstadoVenta save(EstadoVenta ev) {
         java.sql.Connection conexion=null;
         try{
             conexion = (java.sql.Connection) Conexion.GetConexion();

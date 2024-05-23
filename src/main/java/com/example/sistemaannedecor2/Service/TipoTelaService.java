@@ -16,7 +16,7 @@ public class TipoTelaService {
     }
 
     public TipoTela Save(TipoTela c){
-        return tpCon.saveCortina(c);
+        return tpCon.save(c);
     }
 
 
